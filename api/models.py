@@ -27,7 +27,7 @@ class Event(models.Model):
 class Track(models.Model):
     name = models.CharField('Название', max_length=100)
     artist = models.CharField('Артист', max_length=100)
-    url = models.URLField('Ссылка на песню')
+    url = models.URLField('Ссылка на песню', unique=True)
 
     class Meta:
         verbose_name = 'Трэк'
@@ -38,17 +38,14 @@ class Track(models.Model):
 
 
 class EventTrack(models.Model):
-    SCORES = zip(range(1, 11), range(1, 11))
+    event = models.ForeignKey(Event,
+                              on_delete=models.CASCADE,
+                              related_name='event_track',
+                              verbose_name='Событие')
     track = models.ForeignKey(Track,
                               on_delete=models.CASCADE,
                               related_name='event_track',
                               verbose_name='Трэк')
-
-    user = models.ForeignKey(User,
-                             on_delete=models.DO_NOTHING,
-                             related_name='event_track',
-                             verbose_name='Пользователь')
-    score = models.IntegerField(choices=SCORES)
 
     class Meta:
         verbose_name = 'Трэк События'
@@ -56,3 +53,25 @@ class EventTrack(models.Model):
 
     def __str__(self):
         return f'{self.track}'
+
+
+class EventTrackRating(models.Model):
+    SCORES = zip(range(1, 11), range(1, 11))
+
+    event_track = models.ForeignKey(EventTrack,
+                                    on_delete=models.CASCADE,
+                                    related_name='event_track_rating',
+                                    verbose_name='Трэк')
+
+    user = models.ForeignKey(User,
+                             on_delete=models.DO_NOTHING,
+                             related_name='rating',
+                             verbose_name='Пользователь')
+    score = models.IntegerField(choices=SCORES, default=10)
+
+    class Meta:
+        verbose_name = 'Рэйтинг'
+        verbose_name_plural = 'Рэйтинги'
+
+    def __str__(self):
+        return f'{self.user}:{self.event_track} - {self.score}'
