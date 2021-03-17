@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:12.4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+  web:
+    build: .
+    expose:
+      - 8000
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    volumes:
+      - ./static:/code/static
+      - ./media:/code/media
+      - ./templates:/code/templates
+      - ./music-events-project:/code/yamdb_final
+  nginx:
+    restart: always
+    build: ./nginx    
+    ports:
+      - 8000:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d  
+      - ./static:/code/static
+      - ./media:/code/media
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:  
