@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from api.models import Event, Track, EventTrack
+from api.models import Event, EventTrack, EventTrackRating, Track
 
 
 @admin.register(Event)
@@ -19,6 +19,13 @@ class TrackAdmin(admin.ModelAdmin):
 
 @admin.register(EventTrack)
 class EventTrackAdmin(admin.ModelAdmin):
-    list_display = ('track', 'user', 'score')
-    search_fields = ('score', )
-    list_filter = ('score', )
+    list_display = ('id', 'event', 'track',)
+    search_fields = ('event', 'track')
+    list_filter = ('event', 'track')
+
+
+@admin.register(EventTrackRating)
+class EventTrackRatingAdmin(admin.ModelAdmin):
+    list_display = ('user', 'event_track', 'score')
+    search_fields = ('score',)
+    list_filter = ('score',)
