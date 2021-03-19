@@ -16,9 +16,6 @@ services:
       - ./.env
     volumes:
       - ./static:/code/static
-      - ./media:/code/media
-      - ./templates:/code/templates
-      - ./music-events-project:/code/yamdb_final
   nginx:
     restart: always
     build: ./nginx    
@@ -27,7 +24,6 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d  
       - ./static:/code/static
-      - ./media:/code/media
     depends_on:
       - web
 
