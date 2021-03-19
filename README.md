@@ -30,6 +30,7 @@ API для сервиса music-events-project
  - открываем терминал `docker exec -it web bash`
  - создание миграций `python manage.py makemigrations`
  - миграция `python manage.py migrate`
+ - собираем статические файлы `python manage.py collectstatic`
  - создание администратора `python manage.py createsuperuser`
  
  
