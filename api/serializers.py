@@ -38,7 +38,7 @@ class EventTrackSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     author = serializers.CharField(read_only=True)
-    tracks = EventTrackSerializer(many=True)
+    tracks = EventTrackSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event
