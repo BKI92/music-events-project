@@ -48,6 +48,15 @@ class EventSerializer(serializers.ModelSerializer):
 class EventTrackRatingSerializer(serializers.ModelSerializer):
     user = serializers.CharField(read_only=True)
 
+    def validate(self, attrs):
+        event_track = attrs.get('event_track')
+        user = self.context['request'].user
+        if EventTrackRating.objects.filter(event_track=event_track, user=user):
+            raise serializers.ValidationError(
+                {'retry error': 'You have already voted on this track&'})
+
+        return attrs
+
     class Meta:
         model = EventTrackRating
         fields = ('id', 'event_track', 'user', 'score',)
