@@ -15,8 +15,6 @@ class UserTests(TestCase):
             username="sarah", email="connor.s@skynet.com",
             password="12345qwerty"
         )
-        self.client.login(username=self.user.username,
-                          password=self.user.password)
 
     def test_registration_ok(self):
         """Тест успешной регистрации"""
