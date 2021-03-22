@@ -79,7 +79,6 @@ class EventTrackView(ListCreateAPIView):
         event_track = get_object_or_404(EventTrack,
                                         event=self.request.data.get('event'),
                                         track=self.request.data.get('track'))
-        event.tracks.add(event_track)
         if event.max_tracks <= event.tracks.count():
             return Response(
                 {'detail': 'The maximum number of tracks added to this event.'})
@@ -104,15 +103,6 @@ class EventTrackRatingView(ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        user = self.request.user
-        event_track = get_object_or_404(EventTrack,
-                                        id=self.request.data.get('event_track'))
-        if len(EventTrackRating.objects.filter(user=user,
-                                               event_track=event_track.id)) > 1:
-            return Response(
-                {
-                    'detail': 'This user has voted on this track  on current event'})
-
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED,
                         headers=headers)
