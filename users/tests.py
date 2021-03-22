@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from rest_framework import status
 
 from api.models import User
