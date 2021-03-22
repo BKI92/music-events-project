@@ -33,6 +33,11 @@ API для сервиса music-events-project
  - собираем статические файлы `python manage.py collectstatic`
  - создание администратора `python manage.py createsuperuser`
  
+# Тesting 
+- Тестирование выполняется командой `./manage.py test`
+- Для тестирование необходимо в настройках имя базы данных указать явно, например `DB_NAME=postgres` 
+`
+ 
  
 # Built With
 - DRF - Django Rest Framework
