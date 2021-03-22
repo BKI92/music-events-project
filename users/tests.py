@@ -28,7 +28,7 @@ class UserTests(TestCase):
         self.assertEqual(user.username, 'Vasya')
 
     def test_registration_false(self):
-        """Тест неуспешной регистрации. Пользователь уже существует."""
+        """Тест неуспешной регистрации."""
         response = self.client.post('/api/v1/user/registration/',
                                     {'username': self.user.username,
                                      'password': self.user.password})
