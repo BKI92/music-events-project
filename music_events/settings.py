@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '%29r2dbq$9i@+@79g358jd7jp0912okaijiadlpvh%u+wf4vdm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = False
 DEBUG = False
-
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -151,3 +151,9 @@ SIMPLE_JWT = {
 }
 
 DRF_API_LOGGER_DATABASE = True
+
+TEST_CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
