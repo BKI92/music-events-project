@@ -116,14 +116,14 @@ class ApiTest(TestCase):
         self.assertEqual(amount, 1)
 
     def test_list_events_tracks(self):
-        """Тест получения списка тржков события"""
+        """Тест получения списка треков события"""
         EventTrack.objects.create(event=self.event, track=self.track)
         self.client.get('/api/v1/events/tracks/')
         amount = EventTrack.objects.all().count()
         self.assertEqual(amount, 1)
 
     def test_add_rating(self):
-        """Тест добавления трэка к событию"""
+        """Тест оценки трэка события."""
 
         event_track = EventTrack.objects.create(event=self.event,
                                                 track=self.track)
@@ -139,9 +139,10 @@ class ApiTest(TestCase):
         self.assertEqual(score, 8)
 
     def test_add_rating_unique(self):
-        """Тест невозможности повторного добавления трэка к событию """
+        """Тест невозможности повторноой оценки  трэка к событию """
 
-        event_track = EventTrack.objects.create(event=self.event, track=self.track)
+        event_track = EventTrack.objects.create(event=self.event,
+                                                track=self.track)
         data = {
             'event_track': event_track.id,
             'score': 8,
