@@ -57,11 +57,6 @@ class ApiTest(TestCase):
     def test_loaded_tracks(self):
         """Тест получения списка добавленных трэков"""
 
-        Track.objects.create(name='Believer',
-                             artist='Imagine Dragons',
-                             url='https://www.last.fm/music/Imagine+Dragons/'
-                                 '_/Believer')
-
         response = self.client.get('/api/v1/tracks/loaded/', format='json')
         name = response.data.get('results')[0].get('name')
         artist = response.data.get('results')[0].get('artist')
