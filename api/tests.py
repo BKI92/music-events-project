@@ -6,6 +6,7 @@ from api.models import Event, EventTrack, EventTrackRating, Track
 from music_events import settings
 
 END_TIME = '2025-04-23T14:04:52.045283+03:00'
+END_TIME_2 = '2020-04-23T14:04:52.045283+03:00'
 User = get_user_model()
 
 
@@ -87,15 +88,15 @@ class ApiTest(TestCase):
                          'Не получилось создать событие')
 
     def test_post_events_false(self):
-        """Тест   успешного добавления трэка к событию"""
+        """Тест не успешного создания события"""
         data = {
             'time_limit': END_TIME,
             'author': self.user,
             'max_tracks': 10
         }
         self.client.post('/api/v1/events/', data)
-        added_event = Event.objects.filter(title='Test Event')
-        self.assertNotEqual(added_event, None)
+        amount = Event.objects.all().count()
+        self.assertEqual(amount, 1, 'title - обязательное поле')
 
     def test_add_track_to_event_false(self):
         """Тест  попытки добавления уже добавленного трэка к событию"""
@@ -109,6 +110,47 @@ class ApiTest(TestCase):
 
         amount = EventTrack.objects.all().count()
         self.assertEqual(amount, 1)
+
+    def test_add_track_to_event_false_2(self):
+        """Тест  попытки добавления трэка уже заполненного события."""
+        event = Event.objects.create(title='Test2',
+                                     time_limit=END_TIME,
+                                     author=self.user,
+                                     max_tracks=1)
+        track = Track.objects.create(name='Fire',
+                                     artist='Scooter',
+                                     url='https://www.last.fm/music/Scooter/'
+                                         '_/Fire')
+        data = {
+            'event': event.id,
+            'track': self.track.id
+        }
+        data2 = {
+            'event': event.id,
+            'track': track.id
+        }
+
+        self.client.post('/api/v1/events/tracks/', data)
+        self.client.post('/api/v1/events/tracks/', data2)
+
+        amount = EventTrack.objects.all().count()
+        self.assertEqual(amount, 1)
+
+    def test_add_track_to_event_false_3(self):
+        """Тест  попытки добавления трэка после определенного времени."""
+        event = Event.objects.create(title='Test2',
+                                     time_limit=END_TIME_2,
+                                     author=self.user,
+                                     max_tracks=10)
+
+        data = {
+            'event': event.id,
+            'track': self.track.id
+        }
+        self.client.post('/api/v1/events/tracks/', data)
+
+        amount = EventTrack.objects.all().count()
+        self.assertEqual(amount, 0)
 
     def test_list_events_tracks(self):
         """Тест получения списка треков события"""
