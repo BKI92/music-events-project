@@ -79,12 +79,6 @@ class EventTrackView(ListCreateAPIView):
         event_track = get_object_or_404(EventTrack,
                                         event=self.request.data.get('event'),
                                         track=self.request.data.get('track'))
-        if event.max_tracks <= event.tracks.count():
-            return Response(
-                {'detail': 'The maximum number of tracks added to this event.'})
-        if event.time_limit < timezone.now():
-            return Response(
-                {'detail': 'The time for adding tracks to this event is over.'})
 
         event.tracks.add(event_track)
         headers = self.get_success_headers(serializer.data)
