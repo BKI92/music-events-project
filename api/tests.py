@@ -134,7 +134,7 @@ class ApiTest(TestCase):
         self.assertEqual(score, 8)
 
     def test_add_rating_unique(self):
-        """Тест невозможности повторноой оценки  трэка к событию """
+        """Тест невозможности повторной оценки  трэка к событию """
 
         event_track = EventTrack.objects.create(event=self.event,
                                                 track=self.track)
